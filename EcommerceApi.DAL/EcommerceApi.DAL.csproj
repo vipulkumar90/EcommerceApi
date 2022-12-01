@@ -5,9 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Configurations\" />
-    <Folder Include="Identity\" />
-    <Folder Include="Entities\" />
     <Folder Include="Repositories\IRepositories\" />
   </ItemGroup>
 

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EcommerceApi.DAL.Identity
+namespace EcommerceApi.DAL.Entities.ShopingCart
 {
-    class Identity
+    class DeleteMe
     {
     }
 }

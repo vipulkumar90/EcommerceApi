@@ -1,4 +1,5 @@
-﻿using EcommerceApi.DAL.Entities.User;
+﻿using EcommerceApi.DAL.Entities.Product;
+using EcommerceApi.DAL.Entities.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,11 @@ namespace EcommerceApi.DAL.DataContext
 
         public DbSet<UserAddress> UserAddresses { get; set; }
         public DbSet<UserPayment> UserPayment { get; set; }
+        public DbSet<Product> Product { get; set; }
+        public DbSet<ProductCategory> ProductCategory { get; set; }
+        public DbSet<ProductInventory> ProductInventory { get; set; }
+        public DbSet<Discount> Discount { get; set; }
+
 
         //Default Users
         protected override void OnModelCreating(ModelBuilder builder)

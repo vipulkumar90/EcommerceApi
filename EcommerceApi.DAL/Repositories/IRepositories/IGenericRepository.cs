@@ -10,8 +10,8 @@ namespace EcommerceApi.DAL.Repositories.IRepositories
         Task<IEnumerable<T>> GetAllAsync();
         Task<T> GetByIdAsync(object id);
         Task InsertAsync(T obj);
-        Task UpdateAsync(object id, T obj);
-        Task DeleteAsync(object id);
+        void Update(T obj);
+        Task<bool> DeleteAsync(object id);
         Task SaveAsync();
     }
 }

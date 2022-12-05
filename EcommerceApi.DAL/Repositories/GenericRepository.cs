@@ -19,10 +19,15 @@ namespace EcommerceApi.DAL.Repositories
             table = context.Set<T>();
         }
 
-        public async Task DeleteAsync(object id)
+        public async Task<bool> DeleteAsync(object id)
         {
             T existing = await table.FindAsync(id);
+            if (existing == null)
+            {
+                return false;
+            }
             table.Remove(existing);
+            return true;
         }
 
         public async Task<IEnumerable<T>> GetAllAsync() => await table.ToListAsync();
@@ -39,15 +44,10 @@ namespace EcommerceApi.DAL.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(object id, T obj)
+        public void Update(T obj)
         {
-            //Check if entry 
-            var entry = await table.FindAsync(id);
-            if (entry == null)
-            {
-                return;
-            }
-            entry = obj;
+            table.Attach(obj);
+            context.Entry(obj).State = EntityState.Modified;
         }
     }
 }

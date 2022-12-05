@@ -46,7 +46,7 @@ namespace EcommerceApi.DAL.DataContext
                     Id = adminRoleId,
                     ConcurrencyStamp = adminRoleId
                 }
-                );
+            );
 
             //User Id
             string johnId = Guid.NewGuid().ToString();

@@ -61,15 +61,20 @@ namespace EcommerceApi.Web.Controllers
         {
             var userAddress = mapper.Map<UserAddressViewModel, UserAddress>(userAddressViewModel);
             userAddress.Id = id;
-            await repository.UpdateAsync(id, userAddress);
+            repository.Update(userAddress);
             await repository.SaveAsync();
         }
 
         [HttpDelete("{id}")]
-        public async Task DeleteAsync([FromRoute] Guid id)
+        public async Task<IActionResult> DeleteAsync([FromRoute] Guid id)
         {
-            await repository.DeleteAsync(id);
+            var isPresent = await repository.DeleteAsync(id);
+            if (isPresent == false)
+            {
+                return BadRequest(new { message = "id is not present" });
+            }
             await repository.SaveAsync();
+            return Ok();
         }
     }
 }

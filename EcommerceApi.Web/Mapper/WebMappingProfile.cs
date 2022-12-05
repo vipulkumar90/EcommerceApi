@@ -18,7 +18,7 @@ namespace EcommerceApi.Web.Mapper
             CreateMap<LogInViewModel, LogInDto>().ReverseMap();
 
             CreateMap<UserAddressViewModel, UserAddress>()
-                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.AddressLine1 +  src.AddressLine2));
+                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.AddressLine1 + ", " +  src.AddressLine2));
             CreateMap<UserAddress, UserAddressViewModel>()
                 .ForMember(dest => dest.AddressLine1, opt => opt.MapFrom(src => src.Address));
         }

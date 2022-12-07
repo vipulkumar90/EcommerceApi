@@ -1,4 +1,5 @@
 ﻿using EcommerceApi.DAL.Entities.UserData;
+using EcommerceApi.DAL.Entities.ProductData;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,11 @@ namespace EcommerceApi.DAL.DataContext
 
         public DbSet<UserAddress> UserAddresses { get; set; }
         public DbSet<UserPayment> UserPayment { get; set; }
+        public DbSet<Product> Product { get; set; }
+        public DbSet<ProductCategory> ProductCategory { get; set; }
+        public DbSet<ProductInventory> ProductInventory { get; set; }
+        public DbSet<Discount> Discount { get; set; }
+
 
         //Default Users
         protected override void OnModelCreating(ModelBuilder builder)
@@ -162,6 +168,86 @@ namespace EcommerceApi.DAL.DataContext
                 UserId = deanId
             };
             builder.Entity<UserPayment>().HasData(johnPayment, deanPayment);
+
+            //product entries
+
+            //product Inventory
+
+            var hoodies = new
+            {
+                Id=Guid.NewGuid(),
+                quantity=1036,
+                CreatedAt= new DateTime(2022, 4, 25),
+                ModifiedAt=new DateTime(2022, 4, 25),
+                DeletedAt=new DateTime(2022, 4, 25)
+
+            };
+
+            var sneakers = new
+            {
+                Id = Guid.NewGuid(),
+                quantity = 45916,
+                CreatedAt = new DateTime(2022, 4, 25),
+                ModifiedAt = new DateTime(2022, 4, 25),
+                DeletedAt = new DateTime(2022, 4, 25)
+
+            };
+            builder.Entity<ProductInventory>().HasData(hoodies,sneakers);
+
+            //product category
+
+            var shoe = new
+            {
+                Id = Guid.NewGuid(),
+                Name = "Footwear",
+                Desc = "Footwear for men and woman",
+                CreatedAt = new DateTime(2022, 4, 25),
+                ModifiedAt = new DateTime(2022, 4, 25),
+                DeletedAt = new DateTime(2022, 4, 25)
+
+            };
+            builder.Entity<ProductCategory>().HasData(shoe);
+
+
+            //discount
+
+            var megaSale = new
+            {
+                Id = Guid.NewGuid(),
+                Name = "megaSale",
+                Description = "december Sale",
+                DiscountPercent=30.4,
+                Active=true,
+                CreatedAt = new DateTime(2022, 4, 25),
+                ModifiedAt = new DateTime(2022, 4, 25),
+                DeletedAt = new DateTime(2022, 4, 25)
+
+            };
+            builder.Entity<Discount>().HasData(megaSale);
+
+            //product
+
+            var campusShoe = new
+            {
+                Id = Guid.NewGuid(),
+                Name = "Campus walking shoe",
+                Description= "A pair of grey walking shoes, has regular Styling, slip-on detail Mesh upper Cushioned footbed Textured and patterned outsoleWarranty: 30 days",
+                CategoryId=shoe.Id,
+                InventoryId=sneakers.Id,
+                Price=1989.5,
+                DiscounId=megaSale.Id,
+                CreatedAt = new DateTime(2022, 4, 25),
+                ModifiedAt = new DateTime(2022, 4, 25),
+                DeletedAt = new DateTime(2022, 4, 25)
+
+            };
+            builder.Entity<Product>().HasData(campusShoe);
+
+          
+
+
+
+
         }
     }
 }

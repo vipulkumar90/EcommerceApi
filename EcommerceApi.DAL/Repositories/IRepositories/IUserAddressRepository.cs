@@ -4,9 +4,7 @@ using System.Threading.Tasks;
 
 namespace EcommerceApi.DAL.Repositories.IRepositories
 {
-    public interface IUserAddressRepository: IGenericRepository<UserAddress>
+    public interface IUserAddressRepository: IUserUtilRepository<UserAddress>
     {
-        Task InsertAsync(UserAddress userAddress, string username);
-        Task<IEnumerable<UserAddress>> GetAllForUserAsync(string userId);
     }
 }

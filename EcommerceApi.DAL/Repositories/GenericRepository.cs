@@ -1,10 +1,7 @@
 ﻿using EcommerceApi.DAL.DataContext;
 using EcommerceApi.DAL.Repositories.IRepositories;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EcommerceApi.DAL.Repositories
@@ -12,7 +9,7 @@ namespace EcommerceApi.DAL.Repositories
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private EcommerceContext context;
-        private DbSet<T> table;
+        protected DbSet<T> table;
         public GenericRepository(EcommerceContext context)
         {
             this.context = context;
@@ -34,7 +31,7 @@ namespace EcommerceApi.DAL.Repositories
 
         public async Task<T> GetByIdAsync(object id) => await table.FindAsync(id);
 
-        public virtual async Task InsertAsync(T obj)
+        public async Task InsertAsync(T obj)
         {
             await table.AddAsync(obj);
         }

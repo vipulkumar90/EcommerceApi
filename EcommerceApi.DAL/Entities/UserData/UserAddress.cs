@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EcommerceApi.DAL.Entities.User
+namespace EcommerceApi.DAL.Entities.UserData
 {
     public class UserAddress
     {

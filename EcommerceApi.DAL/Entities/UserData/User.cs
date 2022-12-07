@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace EcommerceApi.DAL.Entities.User
+namespace EcommerceApi.DAL.Entities.UserData
 {
     public class User: IdentityUser
     {

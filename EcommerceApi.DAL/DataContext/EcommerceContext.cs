@@ -1,4 +1,4 @@
-﻿using EcommerceApi.DAL.Entities.User;
+﻿using EcommerceApi.DAL.Entities.UserData;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

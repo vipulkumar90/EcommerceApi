@@ -8,36 +8,34 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Security.Claims;
 using System.Net;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace EcommerceApi.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class UserAddressController : ControllerBase
+    public class UserPaymentController : ControllerBase
     {
-        private readonly ILogger<UserAddressController> logger;
-        private readonly IUserAddressRepository repository;
+        private readonly ILogger<UserPaymentController> logger;
+        private readonly IUserPaymentRepository repository;
         private readonly IMapper mapper;
 
-        public UserAddressController(ILogger<UserAddressController> logger,
-            IUserAddressRepository repository,
+        public UserPaymentController(ILogger<UserPaymentController> logger,
+            IUserPaymentRepository repository,
             IMapper mapper)
         {
             this.logger = logger;
             this.repository = repository;
             this.mapper = mapper;
         }
-
-        //Admin: get all address
+        //Admin: get all payment
         //[Authorize(Roles = "admin")]
         [HttpGet]
-        public async Task<IEnumerable<UserAddressViewModel>> GetAsync() =>
-            mapper.Map<IEnumerable<UserAddress>, IEnumerable<UserAddressViewModel>>(await repository.GetAllAsync());
-
+        public async Task<IEnumerable<UserPaymentViewModel>> GetAsync() =>
+            mapper.Map<IEnumerable<UserPayment>, IEnumerable<UserPaymentViewModel>>(await repository.GetAllAsync());
         //[Authorize(Roles = "customer")]
         [HttpGet("user")]
         public async Task<IActionResult> GetForUserAsync()
@@ -48,23 +46,24 @@ namespace EcommerceApi.Web.Controllers
             {
                 return StatusCode((int) HttpStatusCode.InternalServerError, new { message = "no userid found" });
             }
-            var entityToModel = mapper.Map<IEnumerable<UserAddress>,
-                IEnumerable<UserAddressViewModel>> (await repository.GetAllForUserAsync(userId));
+            var entityToModel = mapper.Map<IEnumerable<UserPayment>,
+                IEnumerable<UserPaymentViewModel>>(await repository.GetAllForUserAsync(userId));
             return Ok(entityToModel);
         }
 
         [HttpGet("{id}")]
-        public async Task<UserAddressViewModel> GetAsync([FromRoute] Guid id) =>
-            mapper.Map<UserAddress, UserAddressViewModel>(await repository.GetByIdAsync(id));
+        public async Task<UserPaymentViewModel> GetAsync([FromRoute] Guid id) =>
+            mapper.Map<UserPayment, UserPaymentViewModel>(await repository.GetByIdAsync(id));
+
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] UserAddressViewModel userAddressViewModel)
+        public async Task<IActionResult> PostAsync([FromBody] UserPaymentViewModel userPaymentViewModel)
         {
             if (ModelState.IsValid)
             {
-                var username = User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimTypes.Name)).Value;
+                var username = User.Claims.FirstOrDefault(x => x.Type.Equals(System.Security.Claims.ClaimTypes.Name)).Value;
                 if (username != null)
                 {
-                    var modelToEntity = mapper.Map<UserAddressViewModel, UserAddress>(userAddressViewModel);
+                    var modelToEntity = mapper.Map<UserPaymentViewModel, UserPayment>(userPaymentViewModel);
 
                     await repository.InsertAsync(modelToEntity, username);
                     await repository.SaveAsync();
@@ -75,11 +74,11 @@ namespace EcommerceApi.Web.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task PutAsync([FromRoute] Guid id, [FromBody] UserAddressViewModel userAddressViewModel)
+        public async Task PutAsync([FromRoute] Guid id, [FromBody] UserPaymentViewModel userPaymentViewModel)
         {
-            var userAddress = mapper.Map<UserAddressViewModel, UserAddress>(userAddressViewModel);
-            userAddress.Id = id;
-            repository.Update(userAddress);
+            var userPayment = mapper.Map<UserPaymentViewModel, UserPayment>(userPaymentViewModel);
+            userPayment.Id = id;
+            repository.Update(userPayment);
             await repository.SaveAsync();
         }
 

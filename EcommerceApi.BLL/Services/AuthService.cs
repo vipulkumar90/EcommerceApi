@@ -1,6 +1,6 @@
 ﻿using EcommerceApi.BLL.Models;
 using EcommerceApi.BLL.Services.IServices;
-using EcommerceApi.DAL.Entities.User;
+using EcommerceApi.DAL.Entities.UserData;
 using EcommerceApi.Shared.Dtos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -60,6 +60,9 @@ namespace EcommerceApi.BLL.Services
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
+
+            //Id
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
 
             return claims;
         }

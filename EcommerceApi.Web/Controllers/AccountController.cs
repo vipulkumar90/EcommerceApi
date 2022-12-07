@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using EcommerceApi.BLL.Services.IServices;
 using EcommerceApi.DAL.DataContext;
-using EcommerceApi.DAL.Entities.User;
+using EcommerceApi.DAL.Entities.UserData;
 using EcommerceApi.Shared.Dtos;
 using EcommerceApi.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;

@@ -4,7 +4,7 @@ using EcommerceApi.BLL.Models;
 using EcommerceApi.BLL.Services;
 using EcommerceApi.BLL.Services.IServices;
 using EcommerceApi.DAL.DataContext;
-using EcommerceApi.DAL.Entities.User;
+using EcommerceApi.DAL.Entities.UserData;
 using EcommerceApi.DAL.Repositories;
 using EcommerceApi.DAL.Repositories.IRepositories;
 using EcommerceApi.Web.Mapper;
@@ -94,6 +94,7 @@ namespace EcommerceApi.Web
             //Repositories
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUserAddressRepository, UserAddressRepository>();
+            services.AddScoped<IUserPaymentRepository, UserPaymentRepository>();
 
             //Mapper
             services.AddScoped<IMapper>(sp => mapperConfiguration.CreateMapper());

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EcommerceApi.DAL.Entities.User
+namespace EcommerceApi.DAL.Entities.UserData
 {
     public class UserPayment
     {

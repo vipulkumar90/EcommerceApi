@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 
 namespace EcommerceApi.Web.ViewModels
 {
@@ -13,5 +12,7 @@ namespace EcommerceApi.Web.ViewModels
         public string Country { get; set; }
         public string Telephone { get; set; }
         public string Mobile { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime ModifiedAt { get; set; }
     }
 }

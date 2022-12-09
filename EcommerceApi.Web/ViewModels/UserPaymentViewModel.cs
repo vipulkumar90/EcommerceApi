@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EcommerceApi.Web.ViewModels
 {
@@ -12,5 +9,7 @@ namespace EcommerceApi.Web.ViewModels
         public string Provider { get; set; }
         public string AccountNo { get; set; }
         public DateTime Expiry { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime ModifiedAt { get; set; }
     }
 }

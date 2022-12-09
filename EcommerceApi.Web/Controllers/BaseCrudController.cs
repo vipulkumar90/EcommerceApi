@@ -22,7 +22,7 @@ namespace EcommerceApi.Web.Controllers
         private readonly IMapper mapper;
 
         public BaseCrudController(ILogger<TController> logger,
-            IUserUtilRepository<TEntity> repository,
+            IGenericRepository<TEntity> repository,
             IMapper mapper)
         {
             this.logger = logger;

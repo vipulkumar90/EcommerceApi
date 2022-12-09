@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace EcommerceApi.Web.ViewModels
 {
     public class UserViewModel
@@ -9,5 +10,7 @@ namespace EcommerceApi.Web.ViewModels
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime ModifiedAt { get; set; }
     }
 }

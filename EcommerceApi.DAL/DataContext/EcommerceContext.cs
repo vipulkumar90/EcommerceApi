@@ -5,14 +5,17 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using EcommerceApi.DAL.Entities.ShopingCart;
 
 namespace EcommerceApi.DAL.DataContext
 {
     public class EcommerceContext : IdentityDbContext<User>
     {
+        private readonly Random random = new Random();
         public EcommerceContext(DbContextOptions<EcommerceContext> options)
             : base(options)
         {
+
         }
 
         public DbSet<UserAddress> UserAddresses { get; set; }
@@ -22,8 +25,14 @@ namespace EcommerceApi.DAL.DataContext
         public DbSet<ProductInventory> ProductInventory { get; set; }
         public DbSet<Discount> Discount { get; set; }
 
+        //Shopping Cart Table
+        public DbSet<OrderDetail> OrderDetail { get; set; }
+        public DbSet<CartItem> CartItem { get; set; }
+        public DbSet<OrderItem> OrderItem { get; set; }
+        public DbSet<PaymentDetail> PaymentDetail { get; set; }
+        public DbSet<ShoppingSession> ShoppingSession { get; set; }
 
-        //Default Users
+        //Seeding data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -135,7 +144,7 @@ namespace EcommerceApi.DAL.DataContext
                 Mobile = "9876598765",
                 UserId = johnId
             };
-            var deanAddress = new 
+            var deanAddress = new
             {
                 Id = Guid.NewGuid(),
                 Address = "House no. 12, Red Lantern Community",
@@ -149,7 +158,7 @@ namespace EcommerceApi.DAL.DataContext
             builder.Entity<UserAddress>().HasData(johnAddress, deanAddress);
 
             //Setting user payment using anonymous type to reference FK
-            var johnPayment = new 
+            var johnPayment = new
             {
                 Id = Guid.NewGuid(),
                 AccountNo = "505050101010",
@@ -158,7 +167,7 @@ namespace EcommerceApi.DAL.DataContext
                 Expiry = new DateTime(2025, 11, 12),
                 UserId = johnId
             };
-            var deanPayment = new 
+            var deanPayment = new
             {
                 Id = Guid.NewGuid(),
                 AccountNo = "606060383838",
@@ -169,85 +178,143 @@ namespace EcommerceApi.DAL.DataContext
             };
             builder.Entity<UserPayment>().HasData(johnPayment, deanPayment);
 
-            //product entries
+            //ProductData
+            //Produc Inventory
+            var inventoryList = CreateInventory();
+            builder.Entity<ProductInventory>().HasData(inventoryList);
 
-            //product Inventory
+            //Product Category
+            var categoryList = CreateCategories();
+            builder.Entity<ProductCategory>().HasData(categoryList);
 
-            var hoodies = new
-            {
-                Id=Guid.NewGuid(),
-                quantity=1036,
-                CreatedAt= new DateTime(2022, 4, 25),
-                ModifiedAt=new DateTime(2022, 4, 25),
-                DeletedAt=new DateTime(2022, 4, 25)
 
-            };
-
-            var sneakers = new
+            //Discount
+            var discountList = CreateDiscounts();
+            var noDiscount = new Discount
             {
                 Id = Guid.NewGuid(),
-                quantity = 45916,
-                CreatedAt = new DateTime(2022, 4, 25),
-                ModifiedAt = new DateTime(2022, 4, 25),
-                DeletedAt = new DateTime(2022, 4, 25)
-
+                DiscountPercent = 0d,
+                Description = "No Discount",
+                Name = "No Discount",
+                Active = true,
+                CreatedAt = new DateTime(2020, 01, 01),
+                ModifiedAt = new DateTime(2020, 01, 01)
             };
-            builder.Entity<ProductInventory>().HasData(hoodies,sneakers);
+            discountList.Add(noDiscount);
+            builder.Entity<Discount>().HasData(discountList);
 
-            //product category
-
-            var shoe = new
+            //Product
+            var length = 100; //no. of product
+            var productList = new List<object>();
+            var productData = new Dictionary<string, List<string>>
             {
-                Id = Guid.NewGuid(),
-                Name = "Footwear",
-                Desc = "Footwear for men and woman",
-                CreatedAt = new DateTime(2022, 4, 25),
-                ModifiedAt = new DateTime(2022, 4, 25),
-                DeletedAt = new DateTime(2022, 4, 25)
+                {"Stationary", new List<string> { "Pilot Pen", "Classmate Notebook", "Eraser", "Sharpner", "Ruler",
+                    "Marker", "Highlighter", "Stickers", "Watercolors" } },
 
+                {"Electronics", new List<string> { "Smart TV", "Laptop", "Gaming Laptop", 
+                    "Smartphone", "Smartwatch", "Earbuds" } },
+
+                {"Furniture", new List<string> {"Chair", "Sofa", "Bed", "Coffee Table", "Nightstand", 
+                    "Almirah", "Table", "Desk", "Recliner", "Lawn Chair"} },
+
+                {"Clothes", new List<string> {"T-Shirt", "Shirt", "Pant", "Suit", "Sweatshirt", 
+                    "Hoodie", "Cap", "Fedora", "Cargo", "Jeans", "Shorts", "Sweater", "Tuxedo"} },
+
+                {"Footwear", new List<string> {"Sneaker", "Loafer", "Derby", "Boots", "Sandals",
+                    "Slippers", "Oxfords", "Slides", "Crocs"} }
             };
-            builder.Entity<ProductCategory>().HasData(shoe);
-
-
-            //discount
-
-            var megaSale = new
+            for (int i = 0; i < length; i++)
             {
-                Id = Guid.NewGuid(),
-                Name = "megaSale",
-                Description = "december Sale",
-                DiscountPercent=30.4,
-                Active=true,
-                CreatedAt = new DateTime(2022, 4, 25),
-                ModifiedAt = new DateTime(2022, 4, 25),
-                DeletedAt = new DateTime(2022, 4, 25)
+                var randomCategory = categoryList[random.Next(0, categoryList.Count)];
+                var randomDiscount = discountList[random.Next(0, discountList.Count)];
+                var randomInventory = inventoryList[random.Next(0, inventoryList.Count)];
+                var randomProductName = productData[randomCategory.Name][random.Next(0, productData[randomCategory.Name].Count)];
+                var productDate = GetDateBetweenRange(new DateTime(2020, 01, 01), new DateTime(2021, 12, 31));
+                productList.Add(new
+                {
+                    Id = Guid.NewGuid(),
+                    Name = randomProductName,
+                    ProductCategoryId = randomCategory.Id,
+                    Description = "empty",
+                    CreatedAt = productDate,
+                    ModifiedAt = productDate,
+                    DiscountId = (random.Next(1, 100) % 5 == 0 ? randomDiscount.Id : noDiscount.Id),
+                    ProductInventoryId = randomInventory.Id,
+                    Price = random.Next(3000, 60000) * 1d
+                });
+            }
+            builder.Entity<Product>().HasData(productList);
+        }
+        private IList<ProductCategory> CreateCategories()
+        {
+            var categoryNamesDescs = new List<List<string>>();
+            categoryNamesDescs.Add(new List<string> { "Stationary", "Books, Notebooks, Pens" });
+            categoryNamesDescs.Add(new List<string> { "Electronics", "TVs, Smartphone, Smartwatch, Earbuds" });
+            categoryNamesDescs.Add(new List<string> { "Furniture", "Chairs, Beds, Sofas" });
+            categoryNamesDescs.Add(new List<string> { "Clothes", "T-shirts, Shirts, Pants, Sweatshirt" });
+            categoryNamesDescs.Add(new List<string> { "Footwear", "Boots, Sneakers, Derby" });
 
-            };
-            builder.Entity<Discount>().HasData(megaSale);
-
-            //product
-
-            var campusShoe = new
+            var productCategories = new List<ProductCategory>();
+            foreach (var nameDesc in categoryNamesDescs)
             {
-                Id = Guid.NewGuid(),
-                Name = "Campus walking shoe",
-                Description= "A pair of grey walking shoes, has regular Styling, slip-on detail Mesh upper Cushioned footbed Textured and patterned outsoleWarranty: 30 days",
-                CategoryId=shoe.Id,
-                InventoryId=sneakers.Id,
-                Price=1989.5,
-                DiscounId=megaSale.Id,
-                CreatedAt = new DateTime(2022, 4, 25),
-                ModifiedAt = new DateTime(2022, 4, 25),
-                DeletedAt = new DateTime(2022, 4, 25)
+                var categoryDate = GetDateBetweenRange(new DateTime(2020, 01, 01), new DateTime(2021, 12, 31));
+                productCategories.Add(new ProductCategory
+                {
+                    Id = Guid.NewGuid(),
+                    Name = nameDesc[0],
+                    Description = nameDesc[1],
+                    CreatedAt = categoryDate,
+                    ModifiedAt = categoryDate,
+                });
+            }
+            return productCategories;
+        }
+        private IList<Discount> CreateDiscounts()
+        {
+            var discountData = new List<List<string>>();
+            discountData.Add(new List<string> { "Diwali", "Diwali Sale", "50" });
+            discountData.Add(new List<string> { "Republic", "Republic Day Sale", "30" });
+            discountData.Add(new List<string> { "Christmas", "Christmas Sale", "40" });
 
-            };
-            builder.Entity<Product>().HasData(campusShoe);
-
-          
-
-
-
-
+            var length = discountData.Count; //no. of discount obj
+            var discountList = new List<Discount>();
+            for (int i = 0; i < length; i++)
+            {
+                var discountDate = GetDateBetweenRange(new DateTime(2020, 01, 01), new DateTime(2021, 12, 31));
+                discountList.Add(new Discount
+                {
+                    Id = Guid.NewGuid(),
+                    Name = discountData[i][0],
+                    Description = discountData[i][1],
+                    DiscountPercent = double.Parse(discountData[i][2]),
+                    CreatedAt = discountDate,
+                    ModifiedAt = discountDate,
+                    Active = (random.Next(1, 100) % 3 == 0)
+                });
+            }
+            return discountList;
+        }
+        private IList<ProductInventory> CreateInventory()
+        {
+            var length = 20; //no. of inventory obj
+            var productInventories = new List<ProductInventory>();
+            for (int i = 0; i < length; i++)
+            {
+                var inventoryDate = GetDateBetweenRange(new DateTime(2020, 01, 01), new DateTime(2021, 12, 31));
+                productInventories.Add(new ProductInventory
+                {
+                    Id = Guid.NewGuid(),
+                    Quantity = random.Next(100, 3000),
+                    CreatedAt = inventoryDate,
+                    ModifiedAt = inventoryDate
+                });
+            }
+            return productInventories;
+        }
+        private DateTime GetDateBetweenRange(DateTime start, DateTime end)
+        {
+            int range = (end - start).Days;
+            return start.AddDays(random.Next(range));
         }
     }
 }

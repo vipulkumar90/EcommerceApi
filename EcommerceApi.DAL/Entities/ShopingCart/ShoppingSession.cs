@@ -1,7 +1,5 @@
 ﻿using EcommerceApi.DAL.Entities.UserData;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EcommerceApi.DAL.Entities.ShopingCart
 {
@@ -12,5 +10,6 @@ namespace EcommerceApi.DAL.Entities.ShopingCart
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
         public User User { get; set; }
+        public CartItem CartItem { get; set; }
     }
 }

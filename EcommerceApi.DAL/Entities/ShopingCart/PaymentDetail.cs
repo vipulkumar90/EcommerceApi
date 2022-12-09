@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EcommerceApi.DAL.Entities.ShopingCart
 {
@@ -12,7 +10,5 @@ namespace EcommerceApi.DAL.Entities.ShopingCart
         public string Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
-        //FK
-        public OrderDetail OrderDetail { get; set; }
     }
 }

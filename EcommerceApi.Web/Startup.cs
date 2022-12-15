@@ -95,6 +95,8 @@ namespace EcommerceApi.Web
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUserAddressRepository, UserAddressRepository>();
             services.AddScoped<IUserPaymentRepository, UserPaymentRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+
 
             //Mapper
             services.AddScoped<IMapper>(sp => mapperConfiguration.CreateMapper());

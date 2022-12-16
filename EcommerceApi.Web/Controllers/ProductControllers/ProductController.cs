@@ -29,9 +29,17 @@ namespace EcommerceApi.Web.Controllers.ProductControllers
             return Ok(await repository.CategorySpecificProduct(categoryList));
         }
         [HttpGet("byprice")]
-        public async Task<IActionResult> ByPrice(object priceRangeList)
+        public async Task<IActionResult> ByPrice(IList<string> priceRanges)
         {
-            throw new NotImplementedException();
+            IList<IList<double>> priceRangeList = new List<IList<double>>();
+            foreach (var priceRange in priceRanges)
+            {
+                var priceString = priceRange.Split(',');
+                var startPrice = double.Parse(priceString[0]);
+                var endPrice = double.Parse(priceString[1]);
+                priceRangeList.Add(new List<double> { startPrice, endPrice });
+            }
+            return Ok(await repository.PriceRange(priceRangeList));
         }
     }
 }

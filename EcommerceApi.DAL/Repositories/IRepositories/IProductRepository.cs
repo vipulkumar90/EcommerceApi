@@ -9,7 +9,7 @@ namespace EcommerceApi.DAL.Repositories.IRepositories
     public interface IProductRepository : IGenericRepository<Product>
     {
         //Price range
-        Task<IEnumerable<Product>> PriceRange(IDictionary<int, int> priceRangeList);
+        Task<IEnumerable<Product>> PriceRange(IList<IList<double>> priceRangeList);
         //Category
         Task<IEnumerable<Product>> CategorySpecificProduct(IList<string> categoryList);
     }

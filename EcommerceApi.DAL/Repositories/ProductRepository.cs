@@ -21,9 +21,16 @@ namespace EcommerceApi.DAL.Repositories
             category.Equals(product.ProductCategory.Name, StringComparison.OrdinalIgnoreCase))).ToListAsync();
 
 
-        public async Task<IEnumerable<Product>> PriceRange(IDictionary<int, int> priceRangeList)
+        public async Task<IEnumerable<Product>> PriceRange(IList<IList<double>> priceRangeList)
         {
-            return await table.Where(product => priceRangeList.Any(priceRange => product.Price >= priceRange.Key && product.Price <= priceRange.Value)).ToListAsync();
+            List<Product> products = new List<Product>();
+            foreach (var priceRange in priceRangeList)
+            {
+                var startPrice = priceRange[0];
+                var endPrice = priceRange[1];
+                products.AddRange(await table.Where(product => product.Price >= startPrice && product.Price <= endPrice).ToListAsync());
+            }
+            return products;
         }
     }
 }
